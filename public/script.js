@@ -1,5 +1,3 @@
-let fotoBase64 = '';
-let streamCamera = null;
 let logoBase64 = '';
 let nomeLavajatoAtual = 'GestarCar';
 
@@ -39,47 +37,6 @@ async function carregarConfiguracoesLavajato() {
     }
 }
 
-// Câmera
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const btnAtivarCamera = document.getElementById('btnAtivarCamera');
-const btnTirarFoto = document.getElementById('btnTirarFoto');
-const fotoPreview = document.getElementById('fotoPreview');
-
-if (btnAtivarCamera) {
-    btnAtivarCamera.addEventListener('click', async () => {
-        try {
-            streamCamera = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-            video.srcObject = streamCamera;
-            video.style.display = 'block';
-            btnTirarFoto.style.display = 'inline-block';
-            btnAtivarCamera.style.display = 'none';
-        } catch (error) {
-            alert('Erro ao aceder à câmara: ' + error.message);
-        }
-    });
-}
-
-if (btnTirarFoto) {
-    btnTirarFoto.addEventListener('click', () => {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        fotoBase64 = canvas.toDataURL('image/jpeg');
-        fotoPreview.src = fotoBase64;
-        fotoPreview.style.display = 'block';
-
-        if (streamCamera) {
-            streamCamera.getTracks().forEach(track => track.stop());
-            video.style.display = 'none';
-            btnTirarFoto.style.display = 'none';
-            btnAtivarCamera.style.display = 'inline-block';
-            btnAtivarCamera.textContent = 'Tirar Outra Foto';
-        }
-    });
-}
-
 // Envio da OS
 const osForm = document.getElementById('osForm');
 if (osForm) {
@@ -106,9 +63,9 @@ if (osForm) {
             cliente_fone: document.getElementById('cliente_fone').value,
             marca: document.getElementById('marca').value,
             modelo: document.getElementById('modelo').value,
+            placa: document.getElementById('placa').value.toUpperCase(),
             servico: servicoFinal,
             valor: parseFloat(document.getElementById('valor').value),
-            foto: fotoBase64,
             operador: usuarioLogado
         };
 
@@ -124,8 +81,6 @@ if (osForm) {
             if (res.ok && resultado.id) {
                 alert('Ordem de serviço gerada com sucesso!');
                 osForm.reset();
-                if (fotoPreview) fotoPreview.style.display = 'none';
-                fotoBase64 = '';
                 carregarListaOS();
                 
                 setTimeout(() => {
@@ -152,7 +107,7 @@ async function carregarListaOS() {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>#${os.id}</td>
-                <td><strong>${os.cliente_nome}</strong><br><small>${os.marca} ${os.modelo}</small></td>
+                <td><strong>${os.cliente_nome}</strong><br><small>${os.marca} ${os.modelo} (${os.placa || 'N/A'})</small></td>
                 <td>${os.servico}</td>
                 <td>R$ ${os.valor.toFixed(2)}</td>
                 <td><button class="btn-recibo" onclick="abrirRecibo(${os.id})">Recibo</button></td>
@@ -182,11 +137,11 @@ async function abrirRecibo(id) {
                         <div class="info-group"><span>Cliente:</span><span>${os.cliente_nome}</span></div>
                         ${os.cliente_fone ? `<div class="info-group"><span>Telefone:</span><span>${os.cliente_fone}</span></div>` : ''}
                         <div class="info-group"><span>Veículo:</span><span>${os.marca} ${os.modelo}</span></div>
+                        <div class="info-group"><span>Placa:</span><span><strong>${os.placa || 'N/A'}</strong></span></div>
                         <div class="info-group"><span>Serviço:</span><span><strong>${os.servico}</strong></span></div>
                         <div class="info-group" style="color:#28a745; font-size:1.1rem; border-bottom:2px solid #007bff; padding-bottom:8px;">
                             <span>Total:</span><span><strong>R$ ${os.valor.toFixed(2)}</strong></span>
                         </div>
-                        ${os.foto ? `<div class="recibo-footer-foto"><img src="${os.foto}" alt="Foto"></div>` : ''}
                     </div>
                 </div>
             `;
@@ -210,7 +165,7 @@ async function abrirRelatorio(tipo) {
                 htmlItens += `
                     <tr>
                         <td>#${item.id}</td>
-                        <td><strong>${item.cliente_nome}</strong><br><small>${item.marca} ${item.modelo}</small></td>
+                        <td><strong>${item.cliente_nome}</strong><br><small>${item.marca} ${item.modelo} - Placa: ${item.placa || 'N/A'}</small></td>
                         <td><span style="color: #0056b3; font-weight: 500;">${item.servico}</span></td>
                         <td><strong>R$ ${item.valor.toFixed(2)}</strong></td>
                     </tr>

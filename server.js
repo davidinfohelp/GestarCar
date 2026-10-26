@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -36,9 +36,9 @@ db.serialize(() => {
         cliente_fone TEXT,
         marca TEXT NOT NULL,
         modelo TEXT NOT NULL,
+        placa TEXT,
         servico TEXT NOT NULL,
         valor REAL NOT NULL,
-        foto TEXT,
         operador TEXT,
         data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
@@ -88,14 +88,14 @@ app.get('/api/configuracoes/:usuario', (req, res) => {
 });
 
 app.post('/api/os', (req, res) => {
-    const { cliente_nome, cliente_fone, marca, modelo, servico, valor, foto, operador } = req.body;
+    const { cliente_nome, cliente_fone, marca, modelo, placa, servico, valor, operador } = req.body;
     
     if (!cliente_nome || !marca || !modelo || !servico || valor === undefined) {
         return res.status(400).json({ error: 'Preencha todos os campos obrigatórios.' });
     }
 
-    const query = `INSERT INTO gestarcar_os (cliente_nome, cliente_fone, marca, modelo, servico, valor, foto, operador) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.run(query, [cliente_nome, cliente_fone, marca, modelo, servico, valor, foto, operador || 'Geral'], function(err) {
+    const query = `INSERT INTO gestarcar_os (cliente_nome, cliente_fone, marca, modelo, placa, servico, valor, operador) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.run(query, [cliente_nome, cliente_fone, marca, modelo, placa, servico, valor, operador || 'Geral'], function(err) {
         if (err) {
             console.error('Erro ao inserir OS:', err.message);
             return res.status(500).json({ error: err.message });
@@ -127,7 +127,7 @@ app.get('/api/relatorio/:tipo', (req, res) => {
     
     db.get(queryResumo, [], (err, row) => {
         if (err) return res.status(500).json({ error: err.message });
-        db.all(`SELECT id, cliente_nome, marca, modelo, servico, valor FROM gestarcar_os WHERE ${filtroSQL} ORDER BY id DESC`, [], (err, items) => {
+        db.all(`SELECT id, cliente_nome, marca, modelo, placa, servico, valor FROM gestarcar_os WHERE ${filtroSQL} ORDER BY id DESC`, [], (err, items) => {
             res.json({
                 resumo: row || { total_atendimentos: 0, faturamento_total: 0 },
                 itens: items || []
@@ -146,5 +146,5 @@ app.get('/api/os/:id', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`GestarCar servidor a correr em http://localhost:${PORT}`);
+    console.log(`GestarCar servidor a correr na porta ${PORT}`);
 });

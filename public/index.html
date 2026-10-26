@@ -57,6 +57,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="placa">Placa do Veículo:</label>
+                        <input type="text" id="placa" required placeholder="Ex: ABC-1234" style="text-transform: uppercase;">
+                    </div>
+
+                    <div class="form-group">
                         <label>Serviços Desejados (Selecione um ou mais):</label>
                         <div class="servicos-checkbox-container">
                             <label>
@@ -81,19 +86,6 @@
                     <div class="form-group">
                         <label for="valor">Valor Total (R$):</label>
                         <input type="number" id="valor" step="0.01" required placeholder="Ex: 90.00">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Foto da Placa / Veículo:</label>
-                        <div class="camera-container">
-                            <video id="video" autoplay playsinline style="display:none;"></video>
-                            <canvas id="canvas" style="display:none;"></canvas>
-                            <button type="button" id="btnAtivarCamera" class="btn-secondary">Ligar Câmara</button>
-                            <button type="button" id="btnTirarFoto" class="btn-secondary" style="display:none;">Capturar Foto</button>
-                            <div id="previewContainer">
-                                <img id="fotoPreview" alt="Prévia" style="display:none;">
-                            </div>
-                        </div>
                     </div>
 
                     <button type="submit" class="btn-primary">Gerar Ordem de Serviço</button>
