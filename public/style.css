@@ -1,0 +1,459 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    color: #333;
+    padding: 15px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Header e Responsividade */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.app-header h1 {
+    color: #007bff;
+    font-size: 1.5rem;
+}
+
+.app-header p {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+}
+
+.btn-logout {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+/* Painel Admin */
+.admin-panel {
+    margin-bottom: 20px;
+}
+
+.btn-admin-action {
+    background: #ffc107;
+    color: #333;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #444;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-secondary {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* Câmera Responsiva */
+.camera-container video, .camera-container img {
+    width: 100%;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+/* Tabelas e Dispositivos Móveis */
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+table th, table td {
+    padding: 12px 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.85rem;
+}
+
+table th {
+    background-color: #f8f9fa;
+}
+
+.btn-recibo {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Estilos de Login */
+.login-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.login-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.login-card h1 {
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.login-card p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+/* Modais e Papel Timbrado */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.recibo-timbrado {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background: #fff;
+    padding: 15px;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+}
+
+.recibo-header {
+    text-align: center;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.recibo-header h2 {
+    color: #007bff;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+}
+
+.recibo-body .info-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 4px;
+}
+
+.recibo-footer-foto {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.recibo-footer-foto img {
+    max-width: 120px;
+    max-height: 90px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #modalRelatorio, #modalRelatorio *, #modalRecibo, #modalRecibo * {
+        visibility: visible;
+    }
+    #modalRelatorio {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: white;
+        display: block !important;
+    }
+    #modalRecibo {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        box-shadow: none;
+        border: none;
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+        margin: 0;
+        max-height: none;
+        overflow: visible;
+    }
+    .no-print {
+        display: none !important;
+    }
+}
+
+/* --- PAINEL ADMINISTRATIVO MODERNO --- */
+.admin-panel {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+}
+
+.admin-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+/* Botões de Ação do Administrador */
+.btn-admin-action {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-admin-action:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Botão de Configurações */
+.btn-admin-config {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(108, 117, 125, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-admin-config:hover {
+    background: linear-gradient(135deg, #495057, #343a40);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* --- ALINHAMENTO DOS SERVIÇOS (CHECKBOXES) --- */
+.servicos-checkbox-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.servicos-checkbox-container label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    font-weight: normal !important;
+    font-size: 0.95rem !important;
+    cursor: pointer;
+    margin-bottom: 0 !important;
+}
+
+.servicos-checkbox-container input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #007bff;
+    cursor: pointer;
+    margin: 0 !important;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    /* Se o modal de relatório estiver aberto, imprime apenas ele */
+    #modalRelatorio, #modalRelatorio * {
+        visibility: visible;
+    }
+    
+    #modalRelatorio {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: white;
+        display: block !important;
+    }
+
+    /* Esconde o recibo se ele estiver aberto por trás ao gerar relatório */
+    #modalRecibo {
+        display: none !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}

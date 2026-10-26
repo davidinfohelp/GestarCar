@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestarCar - Painel Operacional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <div>
+                <h1 id="tituloTopo">🚗 GestarCar</h1>
+                <p>Controle de Lavajato e Estética Automotiva</p>
+            </div>
+            <div class="user-badge">
+                <span id="userInfo">Utilizador</span>
+                <button onclick="logout()" class="btn-logout">Sair</button>
+            </div>
+        </header>
+
+        <!-- Painel do Administrador -->
+        <div id="adminPanel" class="admin-panel" style="display:none;">
+            <div class="admin-buttons">
+                <button onclick="abrirRelatorio('diario')" class="btn-admin-action">📊 Caixa Diário</button>
+                <button onclick="abrirRelatorio('semanal')" class="btn-admin-action">📈 Relatório Semanal</button>
+                <button onclick="abrirRelatorio('mensal')" class="btn-admin-action">📑 Relatório Mensal</button>
+                <button onclick="abrirModalConfig()" class="btn-admin-config">⚙️ Configurar Lavajato & Logo</button>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- Formulário de Nova OS -->
+            <section class="card">
+                <h2>Nova Entrada de Veículo</h2>
+                <form id="osForm">
+                    <div class="form-group">
+                        <label for="cliente_nome">Nome do Cliente:</label>
+                        <input type="text" id="cliente_nome" required placeholder="Ex: Carlos Silva">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cliente_fone">Telefone / WhatsApp:</label>
+                        <input type="text" id="cliente_fone" placeholder="Ex: (85) 99999-9999">
+                    </div>
+
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+
+                    <div class="form-group">
+                        <label for="marca">Marca do Veículo:</label>
+                        <input type="text" id="marca" required placeholder="Ex: Toyota, VW...">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="modelo">Modelo do Veículo:</label>
+                        <input type="text" id="modelo" required placeholder="Ex: Corolla, Gol...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Serviços Desejados (Selecione um ou mais):</label>
+                        <div class="servicos-checkbox-container">
+                            <label>
+                                <input type="checkbox" name="servicoCheckbox" value="Lavagem Simples"> Lavagem Simples
+                            </label>
+                            <label>
+                                <input type="checkbox" name="servicoCheckbox" value="Lavagem Completa"> Lavagem Completa
+                            </label>
+                            <label>
+                                <input type="checkbox" name="servicoCheckbox" value="Lavagem Completa com Cera"> Lavagem Completa com Cera
+                            </label>
+                            <label>
+                                <input type="checkbox" name="servicoCheckbox" value="Higienização de Bancos"> Higienização de Bancos
+                            </label>
+                            <div style="margin-top: 8px;">
+                                <label style="font-size: 0.85rem; color: #555; margin-bottom: 3px;">Outro Serviço / Personalizado:</label>
+                                <input type="text" id="servicoPersonalizado" placeholder="Ex: Polimento, Ducha...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valor">Valor Total (R$):</label>
+                        <input type="number" id="valor" step="0.01" required placeholder="Ex: 90.00">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Foto da Placa / Veículo:</label>
+                        <div class="camera-container">
+                            <video id="video" autoplay playsinline style="display:none;"></video>
+                            <canvas id="canvas" style="display:none;"></canvas>
+                            <button type="button" id="btnAtivarCamera" class="btn-secondary">Ligar Câmara</button>
+                            <button type="button" id="btnTirarFoto" class="btn-secondary" style="display:none;">Capturar Foto</button>
+                            <div id="previewContainer">
+                                <img id="fotoPreview" alt="Prévia" style="display:none;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Gerar Ordem de Serviço</button>
+                </form>
+            </section>
+
+            <!-- Histórico -->
+            <section class="card">
+                <h2>Histórico de Atendimentos</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente / Veículo</th>
+                                <th>Serviço</th>
+                                <th>Valor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaOS"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modal de Recibo -->
+    <div id="modalRecibo" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal('modalRecibo')">&times;</span>
+            <div id="reciboConteudo"></div>
+            <button onclick="window.print()" class="btn-primary no-print" style="margin-top: 15px;">Imprimir / Salvar PDF</button>
+        </div>
+    </div>
+
+    <!-- Modal de Relatórios -->
+    <div id="modalRelatorio" class="modal">
+        <div class="modal-content" style="width: 700px;">
+            <span class="close" onclick="fecharModal('modalRelatorio')">&times;</span>
+            <div id="relatorioConteudo"></div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;" class="no-print">
+                <button onclick="window.print()" class="btn-primary" style="flex: 1;">🖨️ Imprimir / Baixar em PDF</button>
+                <button onclick="fecharModal('modalRelatorio')" class="btn-secondary" style="flex: 1; background: #6c757d;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Configurações -->
+    <div id="modalConfig" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal('modalConfig')">&times;</span>
+            <h3>⚙️ Personalizar Lavajato & Logótipo</h3>
+            <form id="configForm" style="margin-top: 15px;">
+                <div class="form-group">
+                    <label>Nome do Seu Lavajato:</label>
+                    <input type="text" id="inputNomeLavajato" required>
+                </div>
+                <div class="form-group">
+                    <label>Logótipo do Lavajato (Imagem):</label>
+                    <input type="file" id="inputLogoFile" accept="image/*">
+                </div>
+                <button type="submit" class="btn-primary">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

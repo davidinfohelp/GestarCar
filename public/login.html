@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GestarCar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <h1>🚗 GestarCar</h1>
+        <p>Sistema Inteligente para Lavajatos</p>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="usuario">Utilizador:</label>
+                <input type="text" id="usuario" required placeholder="Ex: admin ou operador">
+            </div>
+            <div class="form-group">
+                <label for="senha">Palavra-passe (Senha):</label>
+                <input type="password" id="senha" required placeholder="Sua senha">
+            </div>
+            <button type="submit" class="btn-primary">Entrar no Sistema</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario, senha })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('gestarcar_user', data.usuario);
+                    localStorage.setItem('gestarcar_perfil', data.perfil);
+                    window.location.href = 'index.html';
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert('Erro de conexão ao efetuar login.');
+            }
+        });
+    </script>
+</body>
+</html>
