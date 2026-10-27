@@ -37,7 +37,7 @@ async function carregarConfiguracoesLavajato() {
     }
 }
 
-// Envio da OS
+// Envio da OS com abertura automática do recibo
 const osForm = document.getElementById('osForm');
 if (osForm) {
     osForm.addEventListener('submit', async (e) => {
@@ -83,6 +83,7 @@ if (osForm) {
                 osForm.reset();
                 carregarListaOS();
                 
+                // Abre o recibo automaticamente logo após gerar a OS
                 setTimeout(() => {
                     abrirRecibo(resultado.id);
                 }, 300);
