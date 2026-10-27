@@ -11,7 +11,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const dbFile = path.join(__dirname, 'database.db');
+const dbFile = path.join(__dirname, 'database_v2.db');
 const db = new sqlite3.Database(dbFile, (err) => {
     if (err) {
         console.error('Erro ao abrir o banco de dados:', err.message);
